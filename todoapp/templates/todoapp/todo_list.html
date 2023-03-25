@@ -1,0 +1,23 @@
+{% extends './base.html' %}
+
+{% block content %}
+<h1>Todo App</h1>
+<form id="toggle-done" method="POST">
+    {% csrf_token %}
+</form>
+<ul class="p-0">
+    {% for todo in todo_list %}
+    <li class="d-flex rounded border bg-body-tertiary my-3 p-1 align-items-center">
+        <p class="my-0 mx-2"><a href="{% url 'update' todo.pk %}" class="text-decoration-none">{{ todo.summary }}</a></p>
+        {% if todo.done %}
+            <button form="toggle-done" formaction="{% url 'unset-done' todo.pk %}" class="btn btn-primary btn-square ms-auto"><i class="fa-regular fa-square-check fa-xl"></i></button>
+        {% else %}
+            <button form="toggle-done" formaction="{% url 'set-done' todo.pk %}" class="btn btn-primary btn-square ms-auto"><i class="fa-regular fa-square fa-xl"></i></button>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+<div>
+    <a href="{% url 'create' %}" class="btn btn-primary">Add</a>
+</div>
+{% endblock content %}
