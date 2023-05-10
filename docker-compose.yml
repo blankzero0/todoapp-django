@@ -1,0 +1,11 @@
+services:
+  django:
+    build:
+      context: .
+      target: django
+  webserver:
+    build:
+      context: .
+      target: webserver
+    ports:
+      - "80:80"
