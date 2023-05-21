@@ -12,6 +12,7 @@ COPY . .
 
 FROM app AS django
 COPY ./entrypoint.sh /entrypoint.sh
+EXPOSE 8000
 CMD ["/entrypoint.sh"]
 
 
@@ -19,6 +20,6 @@ FROM app AS staticfiles
 RUN ./manage.py collectstatic --no-input
 
 
-FROM nginx:alpine AS webserver
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM nginxproxy/nginx-proxy:alpine AS webserver
+COPY serve-static.conf /etc/nginx/vhost.d/default
 COPY --from=staticfiles /app/static /usr/share/nginx/html/static

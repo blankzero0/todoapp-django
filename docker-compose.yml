@@ -3,9 +3,13 @@ services:
     build:
       context: .
       target: django
+    environment:
+      - VIRTUAL_HOST=localhost
   webserver:
     build:
       context: .
       target: webserver
     ports:
       - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
