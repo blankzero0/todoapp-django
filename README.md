@@ -1,8 +1,6 @@
 # Todo App with Django
 
-[![Django CI](https://github.com/blankzero0/todoapp-django/actions/workflows/django.yml/badge.svg)](https://github.com/blankzero0/todoapp-django/actions/workflows/django.yml)
-[![Software Component Analysis](https://github.com/blankzero0/todoapp-django/actions/workflows/sca.yml/badge.svg)](https://github.com/blankzero0/todoapp-django/actions/workflows/sca.yml)
-[![AWS](https://github.com/blankzero0/todoapp-django/actions/workflows/aws.yml/badge.svg)](https://github.com/blankzero0/todoapp-django/actions/workflows/aws.yml)
+[![CI Pipeline](https://github.com/blankzero0/todoapp-django/actions/workflows/main.yml/badge.svg)](https://github.com/blankzero0/todoapp-django/actions/workflows/main.yml)
 
 ![list](./docs/list.png)
 ![edit](./docs/edit.png)
