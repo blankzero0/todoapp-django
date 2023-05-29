@@ -1,0 +1,27 @@
+include:
+  - template: Auto-DevOps.gitlab-ci.yml
+
+build-webserver:
+  extends: build
+  variables:
+    CI_APPLICATION_REPOSITORY: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG/webserver
+    AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS: --target webserver
+
+dast:
+  dependencies: [build, build-webserver]
+  services:
+    - name: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+      alias: django
+      variables:
+        DJANGO_SETTINGS_MODULE: config.settings_production
+        HOST: django
+        VIRTUAL_HOST: django
+        DJANGO_SECRET_KEY: test-secret
+    - name: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG/webserver:$CI_COMMIT_SHA
+      alias: webserver
+      variables:
+        DEFAULT_HOST: django
+
+
+variables:
+  DAST_WEBSITE: https://webserver
