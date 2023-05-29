@@ -22,10 +22,10 @@ jobs:
         run: pip install -r requirements-sast.txt
 
       - name: Bandit
-        run: bandit --recursive --format sarif --output reports/bandit.sarif .
+        run: bandit --recursive --format sarif --output bandit.sarif .
 
       - name: Upload SARIF file
         if: ${{ failure() }}
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: reports/bandit.sarif
+          sarif_file: bandit.sarif
