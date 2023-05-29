@@ -5,11 +5,19 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   test:
     uses: ./.github/workflows/django.yml
 
+  sca:
+    permissions:
+      security-events: write
+    uses: ./.github/workflows/sca.yml
+
   deploy:
-    needs: test
+    needs:
+      - test
+      - sca
     uses: ./.github/workflows/aws.yml
