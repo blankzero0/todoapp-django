@@ -1,0 +1,15 @@
+name: Main
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    uses: ./.github/workflows/django.yml
+
+  deploy:
+    needs: test
+    uses: ./.github/workflows/aws.yml
