@@ -4,12 +4,16 @@ services:
       context: .
       target: django
     environment:
-      - VIRTUAL_HOST=localhost
+      DJANGO_SETTINGS_MODULE: config.settings_proxied_https
   webserver:
     build:
       context: .
       target: webserver
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - letsencrypt:/etc/letsencrypt
+
+volumes:
+  letsencrypt:

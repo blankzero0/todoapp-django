@@ -14,9 +14,11 @@ FROM app AS staticfiles
 RUN ./manage.py collectstatic --no-input
 
 
-FROM nginxproxy/nginx-proxy:alpine AS webserver
-COPY serve-static.conf /etc/nginx/vhost.d/default
+FROM jonasal/nginx-certbot:4.2.1-alpine AS webserver
+COPY proxy.conf /etc/nginx/templates/proxy.conf.template
 COPY --from=staticfiles /app/static /usr/share/nginx/html/static
+
+ENV HOST=localhost
 
 
 FROM app AS django

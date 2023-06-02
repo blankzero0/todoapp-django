@@ -4,8 +4,8 @@ on:
   workflow_call:
 
 jobs:
-  deploy:
-    name: Deploy
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     strategy:
@@ -13,6 +13,10 @@ jobs:
         image:
         - django
         - webserver
+
+    outputs:
+      image-django: ${{ steps.build-image.outputs.image-django }}
+      image-webserver: ${{ steps.build-image.outputs.image-webserver }}
 
     steps:
     - name: Checkout
@@ -37,20 +41,34 @@ jobs:
       run: |
         docker build --tag $REGISTRY/todoapp-django-${{ matrix.image }}:$IMAGE_TAG --target ${{ matrix.image }} .
         docker push $REGISTRY/todoapp-django-${{ matrix.image }}:$IMAGE_TAG
-        echo "image=$REGISTRY/todoapp-django-${{ matrix.image }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        echo "image-${{ matrix.image }}=$REGISTRY/todoapp-django-${{ matrix.image }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    - name: Amazon ECS Render Task Definition
-      id: task-def
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Amazon ECS Render Task Definition django
+      id: task-def-django
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: .aws/task-definitions/todoapp-django-${{ matrix.image }}.json
-        container-name: todoapp-django-${{ matrix.image }}
-        image: ${{ steps.build-image.outputs.image }}
+        task-definition: .aws/task-definitions/todoapp-django.json
+        container-name: django
+        image: ${{ needs.build.outputs.image-django }}
+
+    - name: Amazon ECS Render Task Definition webserver
+      id: task-def-webserver
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def-django.outputs.task-definition }}
+        container-name: webserver
+        image: ${{ needs.build.outputs.image-webserver }}
 
     - name: Amazon ECS Deploy Task Definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ matrix.image }}
+        task-definition: ${{ steps.task-def-webserver.outputs.task-definition }}
+        service: todoapp-django
         cluster: main
-        wait-for-service-stability: true
+        wait-for-service-stability: false

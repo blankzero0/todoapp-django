@@ -1,0 +1,9 @@
+services:
+  django:
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings_proxied_https
+  webserver:
+    environment:
+      CERTBOT_EMAIL: devmail@localhost
+      USE_LOCAL_CA: 1
+      HOST: localhost
