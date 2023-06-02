@@ -27,3 +27,4 @@ jobs:
     #   - sca
     #   - sast
     uses: ./.github/workflows/aws.yml
+    secrets: inherit
