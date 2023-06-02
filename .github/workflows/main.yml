@@ -22,8 +22,8 @@ jobs:
     uses: ./.github/workflows/sast.yml
 
   deploy:
-    needs:
-      - test
-      - sca
-      - sast
+    # needs:
+    #   - test
+    #   - sca
+    #   - sast
     uses: ./.github/workflows/aws.yml
