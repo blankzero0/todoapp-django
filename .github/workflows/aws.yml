@@ -50,6 +50,16 @@ jobs:
     needs: build
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1
+
     - name: Amazon ECS Render Task Definition django
       id: task-def-django
       uses: aws-actions/amazon-ecs-render-task-definition@v1
