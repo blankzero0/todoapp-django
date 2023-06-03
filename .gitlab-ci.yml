@@ -14,13 +14,14 @@ dast:
       alias: django
       variables:
         DJANGO_SETTINGS_MODULE: config.settings_production
-        HOST: django
-        VIRTUAL_HOST: django
+        HOST: webserver
         DJANGO_SECRET_KEY: test-secret
     - name: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG/webserver:$CI_COMMIT_SHA
       alias: webserver
       variables:
-        DEFAULT_HOST: django
+        HOST: webserver
+        USE_LOCAL_CA: 1
+        CERTBOT_EMAIL: ca@webserver
 
 
 variables:
