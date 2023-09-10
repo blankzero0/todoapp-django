@@ -23,6 +23,7 @@ jobs:
             --format HTML
             --enableExperimental
             --failOnCVSS 0
+            --suppression sca/dependency-check-suppressions.xml
 
       - name: Upload HTML report
         if: ${{ failure() }}
