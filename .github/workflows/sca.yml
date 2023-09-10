@@ -20,8 +20,16 @@ jobs:
           path: requirements.txt
           format: SARIF
           args: >
+            --format HTML
             --enableExperimental
             --failOnCVSS 0
+
+      - name: Upload HTML report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@master
+        with:
+           name: Depcheck report
+           path: reports/dependency-check-report.html
 
       - name: Upload SARIF file
         if: ${{ failure() }}
