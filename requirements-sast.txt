@@ -2,7 +2,7 @@ attrs==23.1.0
 bandit==1.7.5
 bandit-sarif-formatter==1.1.1
 gitdb==4.0.10
-GitPython==3.1.31
+GitPython==3.1.35
 jschema-to-python==1.2.3
 jsonpickle==3.0.1
 markdown-it-py==2.2.0
