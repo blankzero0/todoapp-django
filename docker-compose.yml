@@ -3,8 +3,6 @@ services:
     build:
       context: .
       target: django
-    environment:
-      DJANGO_SETTINGS_MODULE: config.settings_proxied_https
   webserver:
     build:
       context: .

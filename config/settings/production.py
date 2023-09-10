@@ -1,4 +1,5 @@
-from .settings_proxied_https import *
+from .base import *
+from .base_proxied_https import *
 
 import os
 
